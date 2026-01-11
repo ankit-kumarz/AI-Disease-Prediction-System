@@ -1,0 +1,53 @@
+# AI Disease Prediction System - Requirements File
+# Tested with Python 3.12.2
+
+# ============================================
+# Core Django Framework & REST API
+# ============================================
+Django==4.2.26
+djangorestframework==3.16.1
+django-cors-headers==4.9.0
+asgiref==3.8.1
+sqlparse==0.5.3
+
+# ============================================
+# Machine Learning & Data Science
+# ============================================
+scikit-learn==1.7.1
+numpy==2.3.2
+pandas==2.2.2
+scipy==1.15.1
+joblib==1.4.2
+
+# ============================================
+# PDF Generation (ReportLab - No External Dependencies)
+# ============================================
+reportlab==4.4.3
+pillow==10.2.0
+
+# ============================================
+# Utilities
+# ============================================
+pytz==2024.1
+python-dateutil==2.9.0.post0
+
+# ============================================
+# Production Server (Optional - Linux/Mac only)
+# ============================================
+# gunicorn==23.0.0
+
+# ============================================
+# Database Drivers (Optional - for production)
+# ============================================
+# For PostgreSQL:
+# psycopg2-binary==2.9.9
+#
+# For MySQL:
+# mysqlclient==2.2.0
+#
+# Note: SQLite is included with Python by default
+
+# ============================================
+# Development Tools (Optional)
+# ============================================
+# python-dotenv==1.0.0  # Environment variable management

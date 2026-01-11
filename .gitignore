@@ -1,0 +1,95 @@
+# Python
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+*.manifest
+*.spec
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+/staticfiles
+/static_root
+/media
+migrations/__pycache__/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+.virtualenv
+venv.bak/
+env.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+*.bak
+*.tmp
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.development
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+coverage.xml
+*.cover
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyCharm
+.idea/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# Security
+*.pem
+*.key
+*.cert
+
+# Model files (large binaries - optional)
+# Uncomment if models should not be tracked
+# *.pkl
+# *.joblib
+# *.h5
+# *.pt
+
+# Notes: Keep Model/*.pkl files (ML models) - they are essential for the application

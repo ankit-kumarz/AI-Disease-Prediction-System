@@ -1,0 +1,610 @@
+
+{% extends 'predictor/base.html' %}
+
+{% block title %}Enhanced Prediction Result{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* FORCE BACKGROUND CHANGES - MAXIMUM PRIORITY */
+    .result-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        background-attachment: fixed !important;
+        min-height: 100vh;
+        padding: 40px 0;
+    }
+
+    /* MEDICAL-GRADE READABLE CARDS - SOLID BACKGROUNDS */
+    .result-card,
+    div.result-card,
+    .card,
+    div.card,
+    .container-fluid .result-card,
+    .container-fluid .card {
+        background-color: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        margin-bottom: 25px !important;
+        padding: 24px !important;
+        color: #111111 !important;
+        backdrop-filter: none !important;
+    }
+
+    /* FORCE ALL TEXT TO BE READABLE - LIGHT THEME */
+    .result-card,
+    .result-card *,
+    .result-card h1,
+    .result-card h2,
+    .result-card h3,
+    .result-card h4,
+    .result-card h5,
+    .result-card h6,
+    .result-card p,
+    .result-card span,
+    .result-card div,
+    .result-card strong,
+    .card,
+    .card *,
+    .card h1,
+    .card h2,
+    .card h3,
+    .card h4,
+    .card h5,
+    .card h6,
+    .card p,
+    .card span,
+    .card div,
+    .card strong {
+        color: #111111 !important;
+        text-shadow: none !important;
+        background: transparent !important;
+    }
+
+    .result-card-header {
+        background: var(--gradient);
+        color: white !important;
+        padding: 20px;
+        margin: -30px -30px 20px -30px;
+        border-radius: 20px 20px 0 0;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .result-card-header h5 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.3rem;
+        color: white !important;
+    }
+
+    /* DARK THEME - SOLID BACKGROUNDS FOR ACCESSIBILITY */
+    body.dark-mode .result-card,
+    body.dark-mode div.result-card,
+    body.dark-mode .container-fluid .result-card,
+    body.dark-mode .card,
+    body.dark-mode div.card {
+        background-color: #1e1e2f !important;
+        border: 1px solid #374151 !important;
+        color: #ffffff !important;
+        backdrop-filter: none !important;
+    }
+
+    /* FORCE ALL TEXT TO BE WHITE IN DARK THEME */
+    body.dark-mode .result-card,
+    body.dark-mode .result-card *,
+    body.dark-mode .result-card h1,
+    body.dark-mode .result-card h2,
+    body.dark-mode .result-card h3,
+    body.dark-mode .result-card h4,
+    body.dark-mode .result-card h5,
+    body.dark-mode .result-card h6,
+    body.dark-mode .result-card p,
+    body.dark-mode .result-card span,
+    body.dark-mode .result-card div,
+    body.dark-mode .result-card strong,
+    body.dark-mode .card,
+    body.dark-mode .card *,
+    body.dark-mode .card h1,
+    body.dark-mode .card h2,
+    body.dark-mode .card h3,
+    body.dark-mode .card h4,
+    body.dark-mode .card h5,
+    body.dark-mode .card h6,
+    body.dark-mode .card p,
+    body.dark-mode .card span,
+    body.dark-mode .card div,
+    body.dark-mode .card strong {
+        color: #ffffff !important;
+        background: transparent !important;
+    }
+
+    body.dark-mode .result-card *,
+    body.dark-mode .result-card h2,
+    body.dark-mode .result-card h3,
+    body.dark-mode .result-card h4,
+    body.dark-mode .result-card h5,
+    body.dark-mode .result-card h6,
+    body.dark-mode .result-card p,
+    body.dark-mode .result-card span,
+    body.dark-mode .result-card div {
+        color: #ffffff !important;
+    }
+
+    body.dark-mode .result-card-header {
+        background: var(--gradient);
+        color: white !important;
+    }
+
+    .result-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Risk Level Badges */
+    .risk-low {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-weight: 600;
+        display: inline-block;
+        box-shadow: 0 4px 15px rgba(67, 233, 123, 0.3);
+    }
+
+    .risk-medium {
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-weight: 600;
+        display: inline-block;
+        box-shadow: 0 4px 15px rgba(250, 112, 154, 0.3);
+    }
+
+    .risk-high {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ff6b9d 100%);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-weight: 600;
+        display: inline-block;
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    }
+
+    .feature-importance-bar {
+        height: 30px;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+        box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+    }
+
+    /* Recommendation Section - SOLID ACCESSIBLE BACKGROUNDS */
+    .recommendation-section {
+        background-color: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 12px !important;
+        padding: 24px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        color: #111111 !important;
+    }
+
+    .recommendation-section * {
+        color: #111111 !important;
+    }
+
+    body.dark-mode .recommendation-section {
+        background-color: #1e1e2f !important;
+        border: 1px solid #374151 !important;
+        color: #ffffff !important;
+    }
+
+    body.dark-mode .recommendation-section * {
+        color: #ffffff !important;
+    }
+
+    .recommendation-category {
+        background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+        border-left: 4px solid #667eea;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+
+    body.dark-mode .recommendation-category {
+        background: rgba(102, 126, 234, 0.15) !important;
+        border-left-color: #4facfe !important;
+    }
+
+    .recommendation-category:hover {
+        background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 100%);
+        transform: translateX(5px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+    }
+
+    .recommendation-category h6 {
+        color: #667eea !important;
+        font-weight: 600;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.1rem;
+    }
+
+    body.dark-mode .recommendation-category h6 {
+        color: #4facfe !important;
+    }
+
+    .recommendation-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .recommendation-list li {
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 12px;
+        color: #333333 !important;
+        line-height: 1.6;
+    }
+
+    body.dark-mode .recommendation-list li {
+        color: #ffffff !important;
+    }
+
+    .recommendation-list li:before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #4facfe;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .progress {
+        background: rgba(102, 126, 234, 0.1);
+        border-radius: 10px;
+        height: 25px;
+        overflow: hidden;
+    }
+
+    body.dark-mode .progress {
+        background: rgba(102, 126, 234, 0.2);
+    }
+
+    .progress-bar {
+        background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white !important;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+
+    .alert {
+        background: rgba(255, 107, 107, 0.1) !important;
+        border: 1px solid rgba(255, 107, 107, 0.2) !important;
+        border-radius: 10px !important;
+        color: #333333 !important;
+    }
+
+    .alert strong {
+        color: #ff6b6b !important;
+    }
+
+    body.dark-mode .alert {
+        background: rgba(255, 107, 107, 0.15) !important;
+        border-color: rgba(255, 107, 107, 0.3) !important;
+        color: #ffffff !important;
+    }
+
+    body.dark-mode .alert strong {
+        color: #ff8a8a !important;
+    }
+
+    .text-muted {
+        color: #999999 !important;
+    }
+
+    body.dark-mode .text-muted {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="result-container" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; background-attachment: fixed !important;">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8 mb-4">
+                <!-- Risk Summary Card -->
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <i class="fas fa-heartbeat"></i>
+                        <h5>{{ record.disease|title }} Prediction Result</h5>
+                    </div>
+                    <div class="text-center p-2">
+                        <!-- Prediction Label -->
+                        <div class="mb-4">
+                            <span class="risk-badge-large">
+                                {{ record.prediction_label }}
+                            </span>
+                        </div>
+                        
+                        <!-- Risk Level -->
+                        {% if record.risk_level %}
+                        <div class="mb-3">
+                            <span class="risk-{{ record.risk_level|lower }}">
+                                {{ record.get_risk_level_display }}
+                            </span>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Confidence -->
+                        <h4 class="mb-2" style="color: #667eea; font-weight: 600;">Confidence: {{ probability_percent }}%</h4>
+                        <p class="text-muted">Analysis Date: {{ record.created_at|date:"F d, Y \a\t H:i" }}</p>
+                    </div>
+                </div>
+
+                <!-- Risk Description -->
+                {% if risk_description %}
+                <div class="result-card">
+                    <div class="result-card-header" style="background: linear-gradient(135deg, #ff6b6b 0%, #ff6b9d 100%);">
+                        <i class="fas fa-{{ risk_description.icon }}"></i>
+                        <h5>{{ risk_description.title }}</h5>
+                    </div>
+                    <div class="p-2">
+                        <p style="color: #333;">{{ risk_description.description }}</p>
+                        <div class="alert alert-light" style="background: rgba(255, 107, 107, 0.1); border: 1px solid rgba(255, 107, 107, 0.2); border-radius: 10px; margin-bottom: 0;">
+                            <strong style="color: #ff6b6b;">Recommended Actions:</strong>
+                            <pre style="white-space: pre-wrap; background: none; border: none; padding: 0.5rem 0 0 0; margin: 0; color: #333;">{{ risk_description.action }}</pre>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Probability Distribution -->
+                {% if record.probabilities %}
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <i class="fas fa-chart-pie"></i>
+                        <h5>Probability Distribution</h5>
+                    </div>
+                    <div class="p-2">
+                        {% for label, prob in record.probabilities.items %}
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span style="font-weight: 600; color: #333;"><strong>{{ label }}</strong></span>
+                                <span style="color: #667eea; font-weight: 600;">{{ prob|floatformat:1 }}%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" 
+                                     style="width: {{ prob }}%"
+                                     aria-valuenow="{{ prob }}" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100">
+                                    {{ prob|floatformat:1 }}%
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- AI Explainability -->
+                {% if record.top_features %}
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <i class="fas fa-brain"></i>
+                        <h5>AI Explainability - Top Contributing Factors</h5>
+                    </div>
+                    <div class="p-2">
+                        <p class="text-muted mb-4">
+                            These factors had the most significant impact on the prediction:
+                        </p>
+                        {% for feature in record.top_features %}
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span style="font-weight: 600; color: #333;"><strong>{{ feature.name|title }}</strong></span>
+                                <span class="badge" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">{{ feature.importance }}% importance</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="progress flex-grow-1">
+                                    <div class="feature-importance-bar" role="progressbar" 
+                                         style="width: {{ feature.importance }}%"
+                                         aria-valuenow="{{ feature.importance }}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                    </div>
+                                </div>
+                                <span style="color: #667eea; font-weight: 600;">{{ feature.value }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+            <!-- Risk Factors -->
+            {% if record.risk_factors %}
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Identified Risk Factors
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for factor in record.risk_factors %}
+                        <li class="list-group-item">{{ factor }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Input Summary -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>
+                        Input Parameters
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for key, value in record.inputs.items %}
+                        <div class="col-md-6 mb-2">
+                            <strong>{{ key|title }}:</strong> 
+                            <span class="badge bg-light text-dark">
+                                {% if value|floatformat:2 %}
+                                    {{ value|floatformat:2 }}
+                                {% else %}
+                                    {{ value }}
+                                {% endif %}
+                            </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Personalized Recommendations -->
+            {% if record.recommendations %}
+            <div class="recommendation-section">
+                <h5 class="mb-4" style="color: #667eea; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-heartbeat"></i>
+                    Personalized Medical Recommendations
+                </h5>
+                
+                {% if record.recommendations.lifestyle %}
+                <div class="recommendation-category">
+                    <h6>
+                        <i class="fas fa-running"></i>Lifestyle Modifications
+                    </h6>
+                    <ul class="recommendation-list">
+                        {% for rec in record.recommendations.lifestyle %}
+                        <li>{{ rec }}</li>
+                        {% empty %}
+                        <li class="text-muted">No lifestyle recommendations available</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                {% if record.recommendations.diet %}
+                <div class="recommendation-category">
+                    <h6>
+                        <i class="fas fa-apple-alt"></i>Dietary Recommendations
+                    </h6>
+                    <ul class="recommendation-list">
+                        {% for rec in record.recommendations.diet %}
+                        <li>{{ rec }}</li>
+                        {% empty %}
+                        <li class="text-muted">No dietary recommendations available</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                {% if record.recommendations.medical %}
+                <div class="recommendation-category">
+                    <h6>
+                        <i class="fas fa-user-md"></i>Medical Follow-up
+                    </h6>
+                    <ul class="recommendation-list">
+                        {% for rec in record.recommendations.medical %}
+                        <li>{{ rec }}</li>
+                        {% empty %}
+                        <li class="text-muted">No medical follow-up recommendations available</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                {% if record.recommendations.monitoring %}
+                <div class="recommendation-category">
+                    <h6>
+                        <i class="fas fa-chart-line"></i>Health Monitoring
+                    </h6>
+                        <ul class="recommendation-list mb-0">
+                            {% for rec in record.recommendations.monitoring %}
+                            <li class="mb-2" style="color: #000 !important; display: block !important;">{{ rec }}</li>
+                            {% empty %}
+                            <li class="text-muted">No monitoring recommendations available</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <!-- No Recommendations Available -->
+            <div class="alert alert-warning" role="alert">
+                <h6 class="alert-heading">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Recommendations Not Available
+                </h6>
+                <p class="small mb-0">
+                    Personalized recommendations are generated for new predictions.
+                    This prediction may have been created before the recommendation system was implemented.
+                    Please create a new prediction to receive personalized health guidance.
+                </p>
+            </div>
+            {% endif %}
+
+            <!-- Action Buttons -->
+            <div class="card shadow-sm mb-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none;">
+                <div class="card-body" style="background: transparent !important;">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'report' record.id %}" class="btn btn-success btn-lg">
+                            <i class="fas fa-file-pdf me-2"></i>
+                            Download PDF Report
+                        </a>
+                        <a href="{% url record.disease %}" class="btn btn-outline-light">
+                            <i class="fas fa-redo me-2"></i>
+                            New {{ record.disease|title }} Prediction
+                        </a>
+                        <a href="{% url 'history' %}" class="btn btn-outline-light">
+                            <i class="fas fa-history me-2"></i>
+                            View History
+                        </a>
+                        <a href="{% url 'home' %}" class="btn btn-outline-light">
+                            <i class="fas fa-home me-2"></i>
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medical Disclaimer -->
+            <div class="alert alert-warning" role="alert">
+                <h6 class="alert-heading">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    Medical Disclaimer
+                </h6>
+                <p class="small mb-0">
+                    This prediction is generated by a machine learning model and is for informational purposes only. 
+                    It should <strong>NOT replace professional medical diagnosis</strong>. Always consult with 
+                    qualified healthcare providers for medical advice, diagnosis, and treatment.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}

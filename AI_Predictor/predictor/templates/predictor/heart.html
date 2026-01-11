@@ -1,0 +1,207 @@
+{% extends 'predictor/base.html' %}
+
+{% block title %}Heart Disease Prediction{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <div class="prediction-card">
+                <div class="prediction-header">
+                    <h2 class="prediction-title">❤️ Heart Disease Prediction</h2>
+                    <p class="prediction-subtitle">
+                        Enter patient cardiovascular health metrics. All fields are required.
+                    </p>
+                </div>
+
+                {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                <form method="post" id="heartForm" class="prediction-form">
+                    {% csrf_token %}
+                    
+                    <!-- Basic Information Section -->
+                    <div class="form-section">
+                        <h4 class="form-section-title">Basic Information</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group-enhanced">
+                                    {{ form.age.label_tag }}
+                                    {{ form.age }}
+                                    {% if form.age.errors %}
+                                        <div class="form-error">{{ form.age.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group-enhanced">
+                                    {{ form.sex.label_tag }}
+                                    {{ form.sex }}
+                                    {% if form.sex.errors %}
+                                        <div class="form-error">{{ form.sex.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chest Pain & Pressure Section -->
+                    <div class="form-section">
+                        <h4 class="form-section-title">Chest & Pressure Metrics</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group-enhanced">
+                                    {{ form.cp.label_tag }}
+                                    {{ form.cp }}
+                                    {% if form.cp.errors %}
+                                        <div class="form-error">{{ form.cp.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group-enhanced">
+                                    {{ form.trestbps.label_tag }}
+                                    {{ form.trestbps }}
+                                    {% if form.trestbps.errors %}
+                                        <div class="form-error">{{ form.trestbps.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Blood Chemistry Section -->
+                    <div class="form-section">
+                        <h4 class="form-section-title">Blood Chemistry</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group-enhanced">
+                                    {{ form.chol.label_tag }}
+                                    {{ form.chol }}
+                                    {% if form.chol.errors %}
+                                        <div class="form-error">{{ form.chol.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group-enhanced">
+                                    {{ form.fbs.label_tag }}
+                                    {{ form.fbs }}
+                                    {% if form.fbs.errors %}
+                                        <div class="form-error">{{ form.fbs.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ECG & Heart Rate Section -->
+                    <div class="form-section">
+                        <h4 class="form-section-title">ECG & Heart Rate</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group-enhanced">
+                                    {{ form.restecg.label_tag }}
+                                    {{ form.restecg }}
+                                    {% if form.restecg.errors %}
+                                        <div class="form-error">{{ form.restecg.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group-enhanced">
+                                    {{ form.thalach.label_tag }}
+                                    {{ form.thalach }}
+                                    {% if form.thalach.errors %}
+                                        <div class="form-error">{{ form.thalach.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exercise Metrics Section -->
+                    <div class="form-section">
+                        <h4 class="form-section-title">Exercise Metrics</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group-enhanced">
+                                    {{ form.exang.label_tag }}
+                                    {{ form.exang }}
+                                    {% if form.exang.errors %}
+                                        <div class="form-error">{{ form.exang.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group-enhanced">
+                                    {{ form.oldpeak.label_tag }}
+                                    {{ form.oldpeak }}
+                                    {% if form.oldpeak.errors %}
+                                        <div class="form-error">{{ form.oldpeak.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Parameters Section -->
+                    <div class="form-section">
+                        <h4 class="form-section-title">Advanced Parameters</h4>
+                        <div class="row">
+                            <div class="col-md-4 mb-4">
+                                <div class="form-group-enhanced">
+                                    {{ form.slope.label_tag }}
+                                    {{ form.slope }}
+                                    {% if form.slope.errors %}
+                                        <div class="form-error">{{ form.slope.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-4">
+                                <div class="form-group-enhanced">
+                                    {{ form.ca.label_tag }}
+                                    {{ form.ca }}
+                                    {% if form.ca.errors %}
+                                        <div class="form-error">{{ form.ca.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mb-4">
+                                <div class="form-group-enhanced">
+                                    {{ form.thal.label_tag }}
+                                    {{ form.thal }}
+                                    {% if form.thal.errors %}
+                                        <div class="form-error">{{ form.thal.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions mt-5">
+                        <button type="submit" class="btn btn-hero btn-lg w-100">
+                            🔍 Predict Heart Disease Risk
+                        </button>
+                        <a href="{% url 'home' %}" class="btn btn-outline w-100">
+                            ← Back to Home
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}

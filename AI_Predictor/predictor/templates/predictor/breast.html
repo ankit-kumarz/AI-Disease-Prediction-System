@@ -1,0 +1,100 @@
+{% extends 'predictor/base.html' %}
+
+{% block title %}Breast Cancer Prediction{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="prediction-card">
+                <div class="prediction-header">
+                    <h2 class="prediction-title">🔬 Breast Cancer Classification</h2>
+                    <p class="prediction-subtitle">
+                        Enter tumor cell nuclei measurements to classify as benign or malignant. All 30 features are required.
+                    </p>
+                </div>
+
+                {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                <form method="post" id="breastForm" class="prediction-form">
+                    {% csrf_token %}
+                    
+                    <!-- Mean Features Section -->
+                    <div class="form-section">
+                        <h4 class="form-section-title">Mean Features</h4>
+                        <div class="row">
+                            {% for field in form %}
+                                {% if 'mean' in field.name %}
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="form-group-enhanced">
+                                        {{ field.label_tag }}
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <div class="form-error">{{ field.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Standard Error Features Section -->
+                    <div class="form-section">
+                        <h4 class="form-section-title">Standard Error Features</h4>
+                        <div class="row">
+                            {% for field in form %}
+                                {% if '_se' in field.name %}
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="form-group-enhanced">
+                                        {{ field.label_tag }}
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <div class="form-error">{{ field.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Worst Features Section -->
+                    <div class="form-section">
+                        <h4 class="form-section-title">Worst Features</h4>
+                        <div class="row">
+                            {% for field in form %}
+                                {% if 'worst' in field.name %}
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="form-group-enhanced">
+                                        {{ field.label_tag }}
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <div class="form-error">{{ field.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions mt-5">
+                        <button type="submit" class="btn btn-hero btn-lg w-100">
+                            🔍 Predict Tumor Classification
+                        </button>
+                        <a href="{% url 'home' %}" class="btn btn-outline w-100">
+                            ← Back to Home
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends 'predictor/base.html' %}
+
+{% block title %}Diabetes Prediction{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="prediction-card">
+            <div class="prediction-header">
+                <h2 class="prediction-title"><i class="fas fa-plus-circle me-2"></i>Diabetes Risk Prediction</h2>
+                <p class="prediction-subtitle">
+                    Enter patient health metrics to predict diabetes risk. All fields are required.
+                </p>
+            </div>
+
+            {% if error %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>{{ error }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endif %}
+
+            <form method="post" id="diabetesForm" class="prediction-form">
+                {% csrf_token %}
+                
+                <div class="form-section">
+                    <h5 class="form-section-title">Health Metrics</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="form-group-enhanced">
+                                {{ form.Pregnancies.label_tag }}
+                                {{ form.Pregnancies }}
+                                {% if form.Pregnancies.errors %}
+                                    <div class="form-error">{{ form.Pregnancies.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="form-group-enhanced">
+                                {{ form.Glucose.label_tag }}
+                                {{ form.Glucose }}
+                                {% if form.Glucose.errors %}
+                                    <div class="form-error">{{ form.Glucose.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="form-group-enhanced">
+                                {{ form.BloodPressure.label_tag }}
+                                {{ form.BloodPressure }}
+                                {% if form.BloodPressure.errors %}
+                                    <div class="form-error">{{ form.BloodPressure.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="form-group-enhanced">
+                                {{ form.SkinThickness.label_tag }}
+                                {{ form.SkinThickness }}
+                                {% if form.SkinThickness.errors %}
+                                    <div class="form-error">{{ form.SkinThickness.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="form-group-enhanced">
+                                {{ form.Insulin.label_tag }}
+                                {{ form.Insulin }}
+                                {% if form.Insulin.errors %}
+                                    <div class="form-error">{{ form.Insulin.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="form-group-enhanced">
+                                {{ form.BMI.label_tag }}
+                                {{ form.BMI }}
+                                {% if form.BMI.errors %}
+                                    <div class="form-error">{{ form.BMI.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="form-group-enhanced">
+                                {{ form.DiabetesPedigreeFunction.label_tag }}
+                                {{ form.DiabetesPedigreeFunction }}
+                                {% if form.DiabetesPedigreeFunction.errors %}
+                                    <div class="form-error">{{ form.DiabetesPedigreeFunction.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="form-group-enhanced">
+                                {{ form.Age.label_tag }}
+                                {{ form.Age }}
+                                {% if form.Age.errors %}
+                                    <div class="form-error">{{ form.Age.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions mt-5">
+                    <button type="submit" class="btn btn-hero btn-primary w-100 mb-3">
+                        <i class="fas fa-chart-line me-2"></i>Predict Diabetes Risk
+                    </button>
+                    <a href="{% url 'home' %}" class="btn btn-outline w-100">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Home
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

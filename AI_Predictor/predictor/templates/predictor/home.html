@@ -1,0 +1,445 @@
+{% extends 'predictor/base.html' %}
+
+{% block title %}Home - AI Disease Predictor{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<!-- AUTHENTICATED USER DASHBOARD -->
+<div class="dashboard-header">
+    <h1 class="welcome-message">Welcome back, {{ user.first_name|default:user.username }}! 👋</h1>
+    <p class="dashboard-subtitle">Your AI-powered health prediction dashboard</p>
+</div>
+
+<!-- Quick Stats -->
+<div class="quick-stats">
+    <div class="stat-box">
+        <div class="stat-box-icon"><i class="fas fa-heartbeat"></i></div>
+        <div class="stat-box-value">{{ predictions_count }}</div>
+        <div class="stat-box-label">Total Predictions</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-box-icon"><i class="fas fa-check-circle"></i></div>
+        <div class="stat-box-value">{{ low_risk_count }}</div>
+        <div class="stat-box-label">Low Risk</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-box-icon"><i class="fas fa-exclamation-circle"></i></div>
+        <div class="stat-box-value">{{ medium_risk_count }}</div>
+        <div class="stat-box-label">Medium Risk</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-box-icon"><i class="fas fa-alert-circle"></i></div>
+        <div class="stat-box-value">{{ high_risk_count }}</div>
+        <div class="stat-box-label">High Risk</div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row g-3 mb-5">
+    <div class="col-md-4">
+        <a href="{% url 'diabetes' %}" class="btn btn-hero btn-primary w-100" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <i class="fas fa-plus-circle"></i> New Diabetes Prediction
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'heart' %}" class="btn btn-hero btn-primary w-100" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <i class="fas fa-heart"></i> New Heart Prediction
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'breast' %}" class="btn btn-hero btn-primary w-100" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <i class="fas fa-ribbon"></i> New Breast Prediction
+        </a>
+    </div>
+</div>
+
+<!-- Recent Predictions -->
+<div class="recent-predictions">
+    <h3 class="section-header"><i class="fas fa-history me-2"></i>Recent Predictions</h3>
+    
+    {% if recent_predictions %}
+        {% for prediction in recent_predictions %}
+        <div class="prediction-item">
+            <div class="prediction-info">
+                <h4>{{ prediction.disease|upper }} Prediction</h4>
+                <p>{{ prediction.created_at|date:"M d, Y - g:i A" }}</p>
+            </div>
+            <div class="prediction-result">
+                <div class="prediction-risk risk-{{ prediction.risk_level|lower }}">
+                    <i class="fas fa-circle me-1"></i>{{ prediction.get_risk_level_display }}
+                </div>
+                <a href="{% url 'result' prediction.id %}" class="btn-view-results ms-3">View Details</a>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="prediction-item">
+            <div class="prediction-info">
+                <h4>No predictions yet</h4>
+                <p>Start making disease predictions to see your history here.</p>
+            </div>
+        </div>
+    {% endif %}
+    
+    {% if predictions_count > 5 %}
+    <div class="text-center mt-4">
+        <a href="{% url 'history' %}" class="btn btn-outline" style="background: var(--glass-bg); border: 2px solid var(--accent-cyan); color: var(--accent-cyan); padding: 12px 30px; border-radius: 10px; text-decoration: none;">
+            <i class="fas fa-list me-2"></i>View All Predictions
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+{% else %}
+<!-- NON-AUTHENTICATED LANDING PAGE -->
+<!-- Hero Section -->
+<div class="hero-section text-center mb-5 page-transition">
+    <div class="hero-badge mb-3">
+        <span class="badge-item"><i class="fas fa-check-circle"></i> Trusted by Medical Professionals</span>
+        <span class="badge-item"><i class="fas fa-shield-alt"></i> HIPAA Compliant</span>
+        <span class="badge-item"><i class="fas fa-award"></i> 95%+ Accuracy</span>
+    </div>
+    
+    <h1 class="hero-title mb-4">AI Disease Predictor</h1>
+    <h2 class="hero-subtitle mb-4">India's Next-Generation AI-Powered Medical Diagnosis Platform</h2>
+    <p class="hero-description mb-5">
+        A secure, accurate, and AI-powered disease prediction infrastructure built for the future<br>
+        of preventive healthcare and early diagnosis.
+    </p>
+    
+    <div class="hero-buttons mb-5">
+        <a href="{% url 'diabetes' %}" class="btn btn-hero btn-primary">
+            <i class="fas fa-chart-line me-2"></i>Start Prediction
+        </a>
+        <a href="{% url 'admin_login' %}" class="btn btn-hero btn-admin">
+            <i class="fas fa-user-shield me-2"></i>Login as Admin
+        </a>
+        <a href="#features" class="btn btn-hero btn-outline">
+            <i class="fas fa-info-circle me-2"></i>Explore Platform
+        </a>
+    </div>
+</div>
+
+<!-- Stats Row -->
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="stat-card-modern">
+            <div class="stat-icon"><i class="fas fa-bullseye"></i></div>
+            <div class="stat-number" data-value="95">95</div>
+            <div class="stat-label">% Accuracy</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card-modern">
+            <div class="stat-icon"><i class="fas fa-brain"></i></div>
+            <div class="stat-number" data-value="3">3</div>
+            <div class="stat-label">AI Models</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card-modern">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-number" data-value="1000">1000</div>
+            <div class="stat-label">+ Predictions</div>
+        </div>
+    </div>
+</div>
+
+<!-- About System Section -->
+<section class="about-system-section mb-5">
+    <div class="text-center mb-5">
+        <h2 class="section-title">About System</h2>
+        <p class="section-subtitle">Learn more about our AI-powered healthcare platform</p>
+    </div>
+    
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="info-card" id="mission">
+                <div class="info-icon info-icon-blue">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h4 class="info-title">Our Mission</h4>
+                <p class="info-description">To revolutionize healthcare by making advanced AI-powered disease prediction accessible to everyone, enabling early detection and prevention through technology.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-card" id="how-it-works">
+                <div class="info-icon info-icon-purple">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <h4 class="info-title">How It Works</h4>
+                <p class="info-description">Our system uses machine learning models trained on validated medical datasets to analyze patient health metrics and provide accurate disease risk predictions in real-time.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-card" id="technology">
+                <div class="info-icon info-icon-cyan">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h4 class="info-title">Technology Stack</h4>
+                <p class="info-description">Built with Django, Python, and modern ML frameworks. Features REST APIs, real-time processing, secure authentication, and scalable cloud infrastructure.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-card" id="accuracy">
+                <div class="info-icon info-icon-teal">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4 class="info-title">Model Accuracy</h4>
+                <p class="info-description">Our AI models achieve 95%+ accuracy rates, validated on medical datasets including Pima Indians, Cleveland Heart, and Wisconsin Breast Cancer datasets.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Core Technologies Section -->
+<section class="technologies-section mb-5" id="features">
+    <div class="text-center mb-5">
+        <h2 class="section-title">Core Technologies Powering AI Disease Predictor</h2>
+        <p class="section-subtitle">Enterprise-grade accuracy meets cutting-edge innovation</p>
+    </div>
+    
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="tech-card">
+                <div class="tech-icon tech-icon-blue">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h4 class="tech-title">Machine Learning</h4>
+                <p class="tech-description">Advanced ML algorithms trained on validated medical datasets ensuring high prediction accuracy.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="tech-card">
+                <div class="tech-icon tech-icon-purple">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h4 class="tech-title">Explainable AI</h4>
+                <p class="tech-description">Feature importance and SHAP values provide transparency in every prediction decision.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="tech-card">
+                <div class="tech-icon tech-icon-orange">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h4 class="tech-title">Medical Datasets</h4>
+                <p class="tech-description">Trained on Pima Indians, Cleveland Heart, and Wisconsin Breast Cancer datasets.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="tech-card">
+                <div class="tech-icon tech-icon-green">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4 class="tech-title">Privacy & Security</h4>
+                <p class="tech-description">Role-based access control and encrypted data storage protect patient information.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Disease Prediction Cards -->
+<section class="prediction-section mb-5">
+    <div class="text-center mb-5">
+        <h2 class="section-title">Available Disease Prediction Models</h2>
+        <p class="section-subtitle">Choose from our validated AI models for instant health predictions</p>
+    </div>
+
+<div class="row g-4 mb-5">
+    <!-- Diabetes Glass Card -->
+    <div class="col-md-4">
+        <div class="glass-card h-100 transform-3d">
+            <div class="card-body text-center p-4">
+                <div class="icon-circle mb-3">
+                    <i class="fas fa-plus-circle"></i>
+                </div>
+                <h3 class="card-title mb-3">Diabetes Prediction</h3>
+                <p class="card-text mb-4">Predict diabetes risk based on health metrics using the Pima Indians Diabetes dataset.</p>
+                <ul class="text-start mb-4" style="list-style: none; padding-left: 0; color: rgba(255,255,255,0.8);">
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>74.68% Accuracy</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>8 Health Metrics</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Instant Results</li>
+                </ul>
+                <a href="{% url 'diabetes' %}" class="btn btn-primary w-100">Get Started</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Heart Disease Glass Card -->
+    <div class="col-md-4">
+        <div class="glass-card h-100 transform-3d">
+            <div class="card-body text-center p-4">
+                <div class="icon-circle mb-3">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h3 class="card-title mb-3">Heart Disease Prediction</h3>
+                <p class="card-text mb-4">Assess cardiovascular health risk using clinical measurements from the Cleveland dataset.</p>
+                <ul class="text-start mb-4" style="list-style: none; padding-left: 0; color: rgba(255,255,255,0.8);">
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>80.33% Accuracy</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>13 Clinical Metrics</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Risk Analysis</li>
+                </ul>
+                <a href="{% url 'heart' %}" class="btn btn-primary w-100">Get Started</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breast Cancer Glass Card -->
+    <div class="col-md-4">
+        <div class="glass-card h-100 transform-3d">
+            <div class="card-body text-center p-4">
+                <div class="icon-circle mb-3">
+                    <i class="fas fa-ribbon"></i>
+                </div>
+                <h3 class="card-title mb-3">Breast Cancer Prediction</h3>
+                <p class="card-text mb-4">Classify tumors as benign or malignant using Wisconsin Breast Cancer dataset features.</p>
+                <ul class="text-start mb-4" style="list-style: none; padding-left: 0; color: rgba(255,255,255,0.8);">
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>95.61% Accuracy</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>30 Features</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Early Detection</li>
+                </ul>
+                <a href="{% url 'breast' %}" class="btn btn-primary w-100">Get Started</a>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- Why Choose Section -->
+<section class="why-choose-section mb-5">
+    <div class="text-center mb-5">
+        <h2 class="section-title">Why Choose AI Disease Predictor?</h2>
+        <p class="section-subtitle">India's most advanced AI-powered medical diagnosis platform</p>
+    </div>
+    
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="feature-icon feature-icon-blue">
+                    <i class="fas fa-microscope"></i>
+                </div>
+                <h5 class="feature-title">High Accuracy Models</h5>
+                <p class="feature-description">Our models achieve up to 95.61% accuracy using state-of-the-art machine learning algorithms trained on validated medical datasets.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="feature-icon feature-icon-purple">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h5 class="feature-title">Instant Predictions</h5>
+                <p class="feature-description">Get disease risk assessments in seconds with real-time processing and immediate results delivery.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="feature-icon feature-icon-green">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h5 class="feature-title">Personalized Recommendations</h5>
+                <p class="feature-description">Receive tailored health recommendations based on your prediction results and risk factors.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="feature-icon feature-icon-orange">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h5 class="feature-title">Explainable Results</h5>
+                <p class="feature-description">Understand the reasoning behind predictions with feature importance scores and detailed explanations.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="feature-icon feature-icon-red">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h5 class="feature-title">Secure Data Storage</h5>
+                <p class="feature-description">Your medical data is encrypted and stored securely with industry-standard security protocols.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="feature-icon feature-icon-teal">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h5 class="feature-title">User-Friendly Interface</h5>
+                <p class="feature-description">Intuitive design makes it easy for anyone to use, with step-by-step guidance through the prediction process.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- User Roles & Capabilities Section -->
+<section class="roles-section mb-5">
+    <div class="text-center mb-5">
+        <h2 class="section-title">User Roles & Capabilities</h2>
+        <p class="section-subtitle">Tailored experiences for users and administrators</p>
+    </div>
+    
+    <div class="row g-4">
+        <!-- User Panel -->
+        <div class="col-md-6">
+            <div class="role-panel user-panel">
+                <div class="role-header">
+                    <div class="role-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 class="role-title">User Panel Features</h3>
+                </div>
+                <div class="role-features">
+                    <div class="role-feature">
+                        <div class="role-feature-icon"><i class="fas fa-heartbeat"></i></div>
+                        <div class="role-feature-text">Make Disease Predictions</div>
+                    </div>
+                    <div class="role-feature">
+                        <div class="role-feature-icon"><i class="fas fa-history"></i></div>
+                        <div class="role-feature-text">View Prediction History</div>
+                    </div>
+                    <div class="role-feature">
+                        <div class="role-feature-icon"><i class="fas fa-download"></i></div>
+                        <div class="role-feature-text">Download Health Reports</div>
+                    </div>
+                    <div class="role-feature">
+                        <div class="role-feature-icon"><i class="fas fa-clipboard-check"></i></div>
+                        <div class="role-feature-text">Personalized Recommendations</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Admin Panel -->
+        <div class="col-md-6">
+            <div class="role-panel admin-panel">
+                <div class="role-header">
+                    <div class="role-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3 class="role-title">Admin Panel Features</h3>
+                </div>
+                <div class="role-features">
+                    <div class="role-feature">
+                        <div class="role-feature-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <div class="role-feature-text">Dashboard Analytics</div>
+                    </div>
+                    <div class="role-feature">
+                        <div class="role-feature-icon"><i class="fas fa-users-cog"></i></div>
+                        <div class="role-feature-text">User Management</div>
+                    </div>
+                    <div class="role-feature">
+                        <div class="role-feature-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="role-feature-text">Prediction Monitoring</div>
+                    </div>
+                    <div class="role-feature">
+                        <div class="role-feature-icon"><i class="fas fa-file-medical"></i></div>
+                        <div class="role-feature-text">System Reports</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
