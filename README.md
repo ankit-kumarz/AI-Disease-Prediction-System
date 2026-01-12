@@ -26,7 +26,7 @@ A comprehensive, production-ready web-based healthcare application that predicts
 - [Contributing](#-contributing)
 - [License](#-license)
 
----
+--- 
 
 ## ✨ Features
 
