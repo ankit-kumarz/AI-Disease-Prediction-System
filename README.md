@@ -76,7 +76,7 @@ A comprehensive, production-ready web-based healthcare application that predicts
 - **Enhanced Result Display**:
   - Prediction label and probability
   - Risk level with visual indicators
-  - Feature importance charts
+  - Feature importance charts 
   - Top contributing features with values
   - Identified risk factors
   - Personalized recommendations (4 categories)
