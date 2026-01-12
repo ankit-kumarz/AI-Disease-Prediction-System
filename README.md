@@ -4,7 +4,7 @@
 A comprehensive, production-ready web-based healthcare application that predicts the likelihood of **Diabetes**, **Heart Disease**, and **Breast Cancer** using machine learning models. The system features role-based access control, explainable AI, personalized health recommendations, risk stratification, and comprehensive audit logging.
 
 ![Python](https://img.shields.io/badge/Python-3.12.2-blue)
-![Django](https://img.shields.io/badge/Django-4.2.26-green)
+![Django](https://img.shields.io/badge/Django-4.2.26-green) 
 ![scikit--learn](https://img.shields.io/badge/scikit--learn-1.7.1-orange)
 ![License](https://img.shields.io/badge/license-MIT-brightgreen)
 
