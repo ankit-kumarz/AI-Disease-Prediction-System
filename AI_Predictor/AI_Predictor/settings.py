@@ -4,9 +4,7 @@ Django settings for AI_Predictor project.
 DEPLOYMENT NOTES:
 - Use environment variables for SECRET_KEY and DEBUG in production
 - Enable HTTPS in production for PHI/PII protection
-- Configure Whitenoise or nginx for static file serving
-- Ensure ALLOWED_HOSTS is properly configured for production domains
-- Consider using database encryption for sensitive prediction records
+
 """
  
 import os
