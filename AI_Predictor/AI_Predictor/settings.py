@@ -1,10 +1,6 @@
 """
 Django settings for AI_Predictor project.
 
-DEPLOYMENT NOTES:
-- Use environment variables for SECRET_KEY and DEBUG in production
-- Enable HTTPS in production for PHI/PII protection
-
 """
  
 import os
