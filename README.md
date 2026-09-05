@@ -83,7 +83,7 @@ A comprehensive, production-ready web-based healthcare application that predicts
 - **Prediction History**: View all personal predictions with timestamps
 - **PDF Reports**: Comprehensive downloadable reports with all insights
 - **Patient Profile Management**: Store demographics and health information
-- **Medical Consent System**: Track consent for data usage and disclaimers
+- **Medical Consent System**: Track consent for data usage and disclaimers 
 - **Responsive Design**: Mobile-friendly interface with gradient theme
 
 ### 👨‍💼 Admin Features
