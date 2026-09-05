@@ -1,8 +1,3 @@
-"""
-Django settings for AI_Predictor project.
-
-"""
- 
 import os
 from pathlib import Path 
 
