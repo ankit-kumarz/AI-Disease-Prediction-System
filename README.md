@@ -79,7 +79,7 @@ A comprehensive, production-ready web-based healthcare application that predicts
   - Feature importance charts 
   - Top contributing features with values
   - Identified risk factors
-  - Personalized recommendations (4 categories)
+  - Personalized recommendations (4 categories) 
 - **Prediction History**: View all personal predictions with timestamps
 - **PDF Reports**: Comprehensive downloadable reports with all insights
 - **Patient Profile Management**: Store demographics and health information
