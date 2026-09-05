@@ -8,7 +8,7 @@ DEPLOYMENT NOTES:
 - Ensure ALLOWED_HOSTS is properly configured for production domains
 - Consider using database encryption for sensitive prediction records
 """
-
+ 
 import os
 from pathlib import Path 
 
