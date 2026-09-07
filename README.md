@@ -109,7 +109,7 @@ A comprehensive, production-ready web-based healthcare application that predicts
   - Performance monitoring
 - **Audit Log Viewer**:
   - Track all system actions
-  - User activity monitoring
+  - User activity monitoring 
   - Security compliance
   - Filterable by user, action type, date
 
