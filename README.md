@@ -116,7 +116,7 @@ A comprehensive, production-ready web-based healthcare application that predicts
 ### 🔍 Audit & Compliance
 - **Comprehensive Audit Logging**: Every system action is logged
 - **Tracked Actions**:
-  - User login/logout
+  - User login/logout 
   - Predictions made
   - Profile updates
   - Admin actions (user management, role changes)
