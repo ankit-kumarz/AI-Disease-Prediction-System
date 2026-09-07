@@ -101,7 +101,7 @@ A comprehensive, production-ready web-based healthcare application that predicts
 - **Prediction Management**:
   - View all predictions across all users
   - Filter by disease type, user, date range
-  - Export to CSV with applied filters
+  - Export to CSV with applied filters 
   - View detailed prediction insights (explainability, recommendations)
 - **Advanced Analytics**:
   - Comprehensive data visualizations
