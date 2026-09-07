@@ -8,7 +8,7 @@ A comprehensive, production-ready web-based healthcare application that predicts
 ![License](https://img.shields.io/badge/license-MIT-brightgreen)
   
 ---
-
+ 
 ## 📋 Table of Contents 
  
 - [Features](#-features)
