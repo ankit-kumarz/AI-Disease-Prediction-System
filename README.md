@@ -10,7 +10,7 @@ A comprehensive, production-ready web-based healthcare application that predicts
 ---
 
 ## 📋 Table of Contents 
-
+ 
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
 - [System Architecture](#-system-architecture)
