@@ -128,7 +128,7 @@ A comprehensive, production-ready web-based healthcare application that predicts
 ---
 
 ## 🛠 Tech Stack
-
+ 
 ### Backend
 - **Framework**: Django 4.2.26
 - **REST API**: Django REST Framework 3.16.1
