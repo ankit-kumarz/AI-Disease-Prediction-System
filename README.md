@@ -70,7 +70,7 @@ A comprehensive, production-ready web-based healthcare application that predicts
 - **Feature-Specific Recommendations**: Targeted advice based on abnormal values
 - **Patient Profile Integration**: Recommendations tailored to age, gender, and health history
 - **Risk-Adjusted Guidance**: More aggressive interventions for higher risk levels
-
+ 
 ### 👥 User Features
 - **Interactive Prediction Forms**: User-friendly input interfaces with field validation
 - **Enhanced Result Display**:
