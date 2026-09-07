@@ -18,7 +18,7 @@ A comprehensive, production-ready web-based healthcare application that predicts
 - [Configuration](#-configuration)
 - [Usage](#-usage)
 - [API Documentation](#-api-documentation)
-- [Model Performance](#-model-performance)
+- [Model Performance](#-model-performance) 
 - [Advanced Features](#-advanced-features)
 - [Project Structure](#-project-structure)
 - [Screenshots](#-screenshots)
